@@ -1,0 +1,6 @@
+name: ClaimSystem
+author: Azodox_
+api-version: 1.17
+version: 0.1.0
+main: fr.azodox.ClaimSystem
+depend: [WorldGuard, WorldGuardEvents]
