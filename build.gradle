@@ -1,0 +1,32 @@
+plugins {
+    id 'java'
+    id 'idea'
+    id 'com.github.johnrengelman.shadow' version '7.1.0'
+}
+
+group 'fr.azodox'
+version '0.1.0'
+
+sourceCompatibility = targetCompatibility = 16
+
+compileJava.options.encoding = 'UTF-8'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven {
+        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+    maven { url = "https://oss.sonatype.org/content/repositories/snapshots/" }
+    maven { url = "https://maven.enginehub.org/repo/" }
+}
+
+dependencies {
+    shadow group: 'org.spigotmc', name: 'spigot', version: '1.17.1-R0.1-SNAPSHOT', changing: true
+    shadow 'com.sk89q.worldguard:worldguard-bukkit:7.0.2'
+    shadow 'net.raidstone:WorldGuardEvents:1.16.4'
+}
+
+shadowJar {
+    archiveClassifier.set('')
+}
