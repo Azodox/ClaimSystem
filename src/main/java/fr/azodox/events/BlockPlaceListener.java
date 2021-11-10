@@ -69,7 +69,9 @@ public class BlockPlaceListener implements Listener {
             RegionManager regions = container.get(BukkitAdapter.adapt(center.getWorld()));
 
             ProtectedCuboidRegion claim = new ProtectedCuboidRegion(
-                    (WGRegionUtil.getRegionsNumber(player.getLocation().getWorld(), player) + 1) + "_claim",
+                    "claim_" +
+                    player.getUniqueId().toString() + "_"
+                    + (WGRegionUtil.getRegionsNumber(player.getLocation().getWorld(), player) + 1),
                     BukkitAdapter.asBlockVector(firstPoint),
                     BukkitAdapter.asBlockVector(secondPoint)
             );
