@@ -11,10 +11,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 
 import fr.azodox.ClaimSystem;
-import fr.azodox.blocks.ICBlock;
 import fr.azodox.conversation.ClaimConversationPrefix;
 import fr.azodox.conversation.ConversationAbandoned;
 import fr.azodox.conversation.WhichPlayerPrompt;
@@ -23,64 +21,53 @@ import fr.azodox.util.HeadUtil;
 import fr.azodox.util.ItemBuilder;
 import fr.azodox.util.WGRegionUtil;
 
-public abstract class CBlockInventory {
+public class CBlockInventory extends FastInv {
 
-    protected final String name;
-    
-    public CBlockInventory(String name) {
-        this.name = name;
-    }
-    
-    public String getInventoryName() {
-        return name;
-    }
+    public CBlockInventory(String title, Player player, ProtectedRegion region) {
+        super(5 * 9, title);
 
-    public abstract void open(Player player, ProtectedRegion region);
-
-    protected FastInv get(Player player, ProtectedRegion region){
-        FastInv inv = new FastInv(5 * 9, this.name);
-        for (int border : inv.getBorders()) {
-            inv.setItem(border, new ItemBuilder(Material.YELLOW_STAINED_GLASS).setName(" ").build());
+        for (int border : getBorders()) {
+          setItem(border, new ItemBuilder(Material.YELLOW_STAINED_GLASS).setName(" ").build());
         }
 
-        inv.setItem(34, new ItemBuilder(Material.BARRIER)
-                .setName(ChatColor.RED + "Supprimer le claim*")
-                .setLore(
-                        "§8§m                        ",
-                        "§8§l| §fAide",
-                        "",
-                        ChatColor.GRAY + "Appuyer sur ce bouton supprimera votre claim.",
-                        ChatColor.GRAY + "Cette opération est irréversible.",
-                        ChatColor.GRAY + "Vous devrez recréer votre claim si vous souhaitez le récupérer.",
-                        "§8§m                        ",
-                        "",
-                        ChatColor.DARK_GRAY + "[" + ChatColor.GRAY + "TIP" + ChatColor.DARK_GRAY + "]" +
-                                ChatColor.GRAY + " La présence de " + ChatColor.DARK_GRAY + "'" + ChatColor.YELLOW +
-                                "*" + ChatColor.DARK_GRAY + "' " +
-                                ChatColor.GRAY + "indique qu'un inventaire de confirmation ",
-                        ChatColor.GRAY + "est présent avant la finalisation de l'action.",
-                        ChatColor.GRAY + "Celui-ci devra être confirmer (ou non)."
-                ).build());
+        setItem(34, new ItemBuilder(Material.BARRIER)
+        .setName(ChatColor.RED + "Supprimer le claim*")
+        .setLore(
+                "§8§m                        ",
+                "§8§l| §fAide",
+                "",
+                ChatColor.GRAY + "Appuyer sur ce bouton supprimera votre claim.",
+                ChatColor.GRAY + "Cette opération est irréversible.",
+                ChatColor.GRAY + "Vous devrez recréer votre claim si vous souhaitez le récupérer.",
+                "§8§m                        ",
+                "",
+                ChatColor.DARK_GRAY + "[" + ChatColor.GRAY + "TIP" + ChatColor.DARK_GRAY + "]" +
+                        ChatColor.GRAY + " La présence de " + ChatColor.DARK_GRAY + "'" + ChatColor.YELLOW +
+                        "*" + ChatColor.DARK_GRAY + "' " +
+                        ChatColor.GRAY + "indique qu'un inventaire de confirmation ",
+                ChatColor.GRAY + "est présent avant la finalisation de l'action.",
+                ChatColor.GRAY + "Celui-ci devra être confirmer (ou non)."
+        ).build(), e -> {new ConfirmInventory(this, region, ConfirmationReason.DELETE).open(player);});
 
-        inv.setItem(22, new ItemBuilder(Material.ENDER_PEARL)
-                .setName(ChatColor.DARK_AQUA + "Afficher les limites")
-                .setLore(
-                        "§8§m                        ",
-                        "§8§l| §fAide",
-                        "",
-                        ChatColor.GRAY + "Appuyer sur ce bouton vous permettra de voir les limites de votre claim.",
-                        ChatColor.GRAY + "Ceci vous permet de voir la taille de votre claim.",
-                        ChatColor.GRAY + "La taille que vous voyez est la taille totale (de la couche " + ChatColor.DARK_AQUA + "0" + ChatColor.GRAY + " à " + ChatColor.DARK_AQUA + "256" + ChatColor.GRAY + ").",
-                        "§8§m                        "
-                )
-                .build());
+        setItem(22, new ItemBuilder(Material.ENDER_PEARL)
+        .setName(ChatColor.DARK_AQUA + "Afficher les limites")
+        .setLore(
+                "§8§m                        ",
+                "§8§l| §fAide",
+                "",
+                ChatColor.GRAY + "Appuyer sur ce bouton vous permettra de voir les limites de votre claim.",
+                ChatColor.GRAY + "Ceci vous permet de voir la taille de votre claim.",
+                ChatColor.GRAY + "La taille que vous voyez est la taille totale (de la couche " + ChatColor.DARK_AQUA + "0" + ChatColor.GRAY + " à " + ChatColor.DARK_AQUA + "256" + ChatColor.GRAY + ").",
+                "§8§m                        "
+        )
+        .build());
 
         /*TODO : Add item to add player in the claim
          *  Add item to see players added in the claim
          *  Complete all lorries.
          */
-
-        inv.setItem(33, new ItemBuilder(HeadUtil.getHead("plus"))
+        
+        setItem(33, new ItemBuilder(HeadUtil.getHead("plus"))
                 .setName(ChatColor.AQUA + "Ajouter un joueur")
                 .setLore(
                         "§8§m                        ",
@@ -104,14 +91,14 @@ public abstract class CBlockInventory {
                     .withTimeout(20)
                     .withFirstPrompt(new WhichPlayerPrompt(claimSystem))
                     .withPrefix(new ClaimConversationPrefix())
-                    .withInitialSessionData(Map.of("location", WGRegionUtil.toBukkitLocation(Bukkit.getWorld("world"), region.getMinimumPoint()), "inventory", inv, "whom", player))
+                    .withInitialSessionData(Map.of("location", WGRegionUtil.toBukkitLocation(Bukkit.getWorld("world"), region.getMinimumPoint()), "inventory", this, "whom", player))
                     .thatExcludesNonPlayersWithMessage("Pas toi.")
                     .addConversationAbandonedListener(new ConversationAbandoned());
 
             factory.buildConversation(player).begin();
         });
 
-        inv.setItem(10, new ItemBuilder(HeadUtil.getHead("wrench")).setName(ChatColor.YELLOW + "Editer les permissions des membres").build());
+        setItem(10, new ItemBuilder(HeadUtil.getHead("wrench")).setName(ChatColor.YELLOW + "Editer les permissions des membres").build());
 
         List<String> members = new ArrayList<>();
         region.getMembers().getUniqueIds().forEach(u -> {
@@ -120,11 +107,9 @@ public abstract class CBlockInventory {
             }
         });
 
-        inv.setItem(16, new ItemBuilder(Material.PAPER)
+        setItem(16, new ItemBuilder(Material.PAPER)
                 .setName(ChatColor.GRAY + "Membres" + ChatColor.DARK_GRAY + " (" + ChatColor.GRAY + members.size() + ChatColor.DARK_GRAY + ")")
                 .setLore(members)
                 .build());
-
-        return inv;
     }
 }
