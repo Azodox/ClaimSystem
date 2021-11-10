@@ -39,7 +39,7 @@ public class PlayerInteractListener implements Listener {
                     entityPlayer.b.sendPacket(packet);
 
                     ICBlock cBlock = CBlockUtil.getClaimBlockFromLevel(CBlockUtil.getClaimBlockLevel(block));
-                    cBlock.getInventory().open(player, region);
+                    cBlock.openInventory(player, region);
                 }
                 e.setCancelled(true);
             }

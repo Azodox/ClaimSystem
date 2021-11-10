@@ -27,7 +27,7 @@ public class AddedPlayerMsgPrompt extends MessagePrompt {
         ProtectedRegion region = WGRegionUtil.getRegionAt((Location) conversationContext.getSessionData("location"));
         CBlockInventory inventory = (CBlockInventory) conversationContext.getSessionData("inventory");
         region.getMembers().addPlayer(player.getUniqueId());
-        inventory.open(whom, region);
+        inventory.open(whom);
         return "Joueur ajouté !";
     }
 }
