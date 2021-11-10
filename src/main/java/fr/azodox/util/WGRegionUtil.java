@@ -66,6 +66,10 @@ public final class WGRegionUtil {
         return null;
     }
 
+    public static int getRegionIndex(String regionId){
+        return Integer.parseInt(regionId.substring(regionId.length() - 1));
+    }
+
     public static void whenCreate(Player player){
         player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 10f, 10f);
         player.spawnParticle(Particle.SPELL_WITCH, player.getLocation(), 20);

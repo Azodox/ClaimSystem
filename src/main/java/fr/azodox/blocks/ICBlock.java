@@ -1,6 +1,8 @@
 package fr.azodox.blocks;
 
-import fr.azodox.inventory.CBlockInventory;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public interface ICBlock {
@@ -10,5 +12,5 @@ public interface ICBlock {
     String getLevel(boolean letter);
     double getXSize();
     double getZSize();
-    CBlockInventory getInventory();
+    void openInventory(Player player, ProtectedRegion region);
 }
