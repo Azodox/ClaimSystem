@@ -1,19 +1,43 @@
 package fr.azodox.inventory;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+
+import fr.azodox.ClaimSystem;
+import fr.azodox.blocks.ICBlock;
+import fr.azodox.conversation.ClaimConversationPrefix;
+import fr.azodox.conversation.ConversationAbandoned;
+import fr.azodox.conversation.WhichPlayerPrompt;
+import fr.azodox.inventory.util.FastInv;
+import fr.azodox.util.HeadUtil;
+import fr.azodox.util.ItemBuilder;
+import fr.azodox.util.WGRegionUtil;
 
 public abstract class CBlockInventory {
 
-    protected String name;
-
-    protected CBlockInventory(String name){
+    protected final String name;
+    
+    public CBlockInventory(String name) {
         this.name = name;
     }
+    
+    public String getInventoryName() {
+        return name;
+    }
 
-    abstract void open(Player player, ProtectedRegion region);
+    public abstract void open(Player player, ProtectedRegion region);
 
-    protected Inventory get(ProtectedRegion region){
+    protected FastInv get(Player player, ProtectedRegion region){
         FastInv inv = new FastInv(5 * 9, this.name);
         for (int border : inv.getBorders()) {
             inv.setItem(border, new ItemBuilder(Material.YELLOW_STAINED_GLASS).setName(" ").build());
@@ -80,7 +104,7 @@ public abstract class CBlockInventory {
                     .withTimeout(20)
                     .withFirstPrompt(new WhichPlayerPrompt(claimSystem))
                     .withPrefix(new ClaimConversationPrefix())
-                    .withInitialSessionData(Map.of("location", WGRegionUtil.toBukkitLocation(Bukkit.getWorld("world"), region.getMinimumPoint()), "inventory", getInventory(), "whom", player))
+                    .withInitialSessionData(Map.of("location", WGRegionUtil.toBukkitLocation(Bukkit.getWorld("world"), region.getMinimumPoint()), "inventory", inv, "whom", player))
                     .thatExcludesNonPlayersWithMessage("Pas toi.")
                     .addConversationAbandonedListener(new ConversationAbandoned());
 
@@ -100,5 +124,7 @@ public abstract class CBlockInventory {
                 .setName(ChatColor.GRAY + "Membres" + ChatColor.DARK_GRAY + " (" + ChatColor.GRAY + members.size() + ChatColor.DARK_GRAY + ")")
                 .setLore(members)
                 .build());
+
+        return inv;
     }
 }

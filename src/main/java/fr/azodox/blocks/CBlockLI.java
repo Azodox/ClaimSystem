@@ -1,34 +1,28 @@
 package fr.azodox.blocks;
 
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import fr.azodox.ClaimSystem;
-import fr.azodox.conversation.ClaimConversationPrefix;
-import fr.azodox.conversation.ConversationAbandoned;
-import fr.azodox.conversation.WhichPlayerPrompt;
-import fr.azodox.inventory.CBlockInventory;
-import fr.azodox.inventory.util.FastInv;
-import fr.azodox.util.HeadUtil;
-import fr.azodox.util.ItemBuilder;
-import fr.azodox.util.WGRegionUtil;
-import org.bukkit.Bukkit;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import fr.azodox.inventory.CBlockInventory;
+import fr.azodox.util.ItemBuilder;
 
-public class CBlockLI implements ICBlock, CBlockInventory {
+public class CBlockLI extends CBlockInventory implements ICBlock {
+
+    public CBlockLI() {
+        super(ChatColor.YELLOW + "§lBloc de claim §6(I)");
+    }
 
     @Override
     public String getName() {
-        return ChatColor.YELLOW + "§lBloc de claim §6(I)";
+        return getInventoryName();
     }
+
 
     @Override
     public ItemStack getItem(String player) {
@@ -80,6 +74,6 @@ public class CBlockLI implements ICBlock, CBlockInventory {
 
     @Override
     public void open(Player player, ProtectedRegion region) {
-        get(region).open(player);
+        get(player, region).open(player);   
     }
 }
