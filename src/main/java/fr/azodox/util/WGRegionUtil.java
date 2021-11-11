@@ -88,6 +88,14 @@ public final class WGRegionUtil {
         return flags;
     }
 
+    public static String translateFlagToString(Flag flag, Object value){
+        String s = "";
+
+        /*TODO : make a string with flag + value 
+        Taking consideration of group flag*/
+        return s;
+    }
+
     public static void whenCreate(Player player){
         player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 10f, 10f);
         player.spawnParticle(Particle.SPELL_WITCH, player.getLocation(), 20);
