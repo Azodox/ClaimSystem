@@ -16,6 +16,7 @@ import fr.azodox.ClaimSystem;
 import fr.azodox.conversation.ClaimConversationPrefix;
 import fr.azodox.conversation.ConversationAbandoned;
 import fr.azodox.conversation.WhichPlayerPrompt;
+import fr.azodox.inventory.permissions.EditPermissionsInventory;
 import fr.azodox.inventory.util.FastInv;
 import fr.azodox.util.HeadUtil;
 import fr.azodox.util.ItemBuilder;
@@ -135,7 +136,7 @@ public class CBlockInventory extends FastInv {
                         WGRegionUtil.getFlags(region)
                 )
                 .build(), e -> {
-                        new EditPermissionsInventory(region).open(player);
+                        new EditPermissionsInventory(player, region).open(player);
                 });
 
         List<String> members = new ArrayList<>();
