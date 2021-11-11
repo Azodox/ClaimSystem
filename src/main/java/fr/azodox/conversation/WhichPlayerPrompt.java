@@ -1,8 +1,7 @@
 package fr.azodox.conversation;
 
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import fr.azodox.ClaimSystem;
-import fr.azodox.util.WGRegionUtil;
+
 import org.bukkit.Location;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.PlayerNamePrompt;
@@ -11,6 +10,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import fr.azodox.ClaimSystem;
+import fr.azodox.util.WGRegionUtil;
 
 public class WhichPlayerPrompt extends PlayerNamePrompt {
 
@@ -39,7 +41,7 @@ public class WhichPlayerPrompt extends PlayerNamePrompt {
         }
 
         conversationContext.setSessionData("player", player);
-        return new AddedPlayerMsgPrompt();
+        return new ManagedPlayerMsgPrompt();
     }
 
     @NotNull
