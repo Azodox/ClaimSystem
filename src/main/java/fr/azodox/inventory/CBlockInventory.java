@@ -61,11 +61,6 @@ public class CBlockInventory extends FastInv {
                 "§8§m                        "
         )
         .build());
-
-        /*TODO : Add item to add player in the claim
-         *  Add item to see players added in the claim
-         *  Complete all lorries.
-         */
         
         setItem(33, new ItemBuilder(HeadUtil.getHead("plus"))
                 .setName(ChatColor.AQUA + "Ajouter un joueur")
@@ -91,14 +86,55 @@ public class CBlockInventory extends FastInv {
                     .withTimeout(20)
                     .withFirstPrompt(new WhichPlayerPrompt(claimSystem))
                     .withPrefix(new ClaimConversationPrefix())
-                    .withInitialSessionData(Map.of("location", WGRegionUtil.toBukkitLocation(Bukkit.getWorld("world"), region.getMinimumPoint()), "inventory", this, "whom", player))
+                    .withInitialSessionData(Map.of(
+                            "location", WGRegionUtil.toBukkitLocation(Bukkit.getWorld("world"), region.getMinimumPoint()), 
+                            "inventory", this, 
+                            "whom", player,
+                            "action", "add"))
                     .thatExcludesNonPlayersWithMessage("Pas toi.")
                     .addConversationAbandonedListener(new ConversationAbandoned());
 
             factory.buildConversation(player).begin();
         });
 
-        setItem(10, new ItemBuilder(HeadUtil.getHead("wrench")).setName(ChatColor.YELLOW + "Editer les permissions des membres").build());
+        setItem(32, new ItemBuilder(HeadUtil.getHead("minus"))
+                .setName(ChatColor.RED + "Retirer un joueur")
+                .setLore(
+                        "§8§m                        ",
+                        "§8§l| §fAide",
+                        "",
+                        ChatColor.GRAY + "Ce bouton permet de retirer un joueur",
+                        ChatColor.GRAY + "parmi les personnes de confiance de votre claim.",
+                        ChatColor.GRAY + "Pour voir les personnes dans votre claim, utilisez le papier.",
+                        "§8§m                        "
+                ).build(), e -> {
+                        ClaimSystem claimSystem = (ClaimSystem) Bukkit.getPluginManager().getPlugin("ClaimSystem");
+
+                        player.closeInventory();
+                        assert claimSystem != null;
+                        ConversationFactory factory = new ConversationFactory(claimSystem)
+                                .withLocalEcho(false)
+                                .withTimeout(20)
+                                .withFirstPrompt(new WhichPlayerPrompt(claimSystem))
+                                .withPrefix(new ClaimConversationPrefix())
+                                .withInitialSessionData(Map.of(
+                                        "location", WGRegionUtil.toBukkitLocation(Bukkit.getWorld("world"), region.getMinimumPoint()), 
+                                        "inventory", this, 
+                                        "whom", player,
+                                        "action", "remove"))
+                                .thatExcludesNonPlayersWithMessage("Pas toi.")
+                                .addConversationAbandonedListener(new ConversationAbandoned());
+
+                        factory.buildConversation(player).begin();
+                });
+
+        //TODO : Code this feature, i.e edit members' permissions.
+        setItem(10, new ItemBuilder(HeadUtil.getHead("wrench"))
+                .setName(ChatColor.YELLOW + "Editer les permissions des membres")
+                .setLore(
+                        WGRegionUtil.getFlags(region)
+                )
+                .build());
 
         List<String> members = new ArrayList<>();
         region.getMembers().getUniqueIds().forEach(u -> {
