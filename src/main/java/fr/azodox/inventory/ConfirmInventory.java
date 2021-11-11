@@ -12,6 +12,7 @@ import fr.azodox.util.ItemBuilder;
 import fr.azodox.util.WGRegionUtil;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -49,15 +50,20 @@ public class ConfirmInventory extends FastInv {
     assert event.getCurrentItem() != null;
     var player = (Player) event.getWhoClicked();
     var item = event.getCurrentItem();
+    var world = Bukkit.getWorld("world");
 
     if(item.getType().equals(Material.GREEN_DYE)){
 
       switch(this.reason){
         case DELETE:
           RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-          RegionManager regions = container.get(BukkitAdapter.adapt(Bukkit.getWorld("world")));
-          regions.removeRegion(region.getId(), RemovalStrategy.REMOVE_CHILDREN);
+          RegionManager regions = container.get(BukkitAdapter.adapt(world));
 
+          //TODO : delete the gold block when deleting region
+          Location center = WGRegionUtil.getRegionCenter(region, world);
+          world.getBlockAt(center).setType(Material.AIR);
+
+          regions.removeRegion(region.getId(), RemovalStrategy.REMOVE_CHILDREN);
           player.closeInventory();
           player.sendMessage(ClaimSystem.PLUGIN_PREFIX + "Votre claim " + WGRegionUtil.getRegionIndex(region.getId()) + " a été supprimé !");
           break;
