@@ -1,17 +1,6 @@
 package fr.azodox.inventory;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.conversations.ConversationFactory;
-import org.bukkit.entity.Player;
-
 import fr.azodox.ClaimSystem;
 import fr.azodox.conversation.ClaimConversationPrefix;
 import fr.azodox.conversation.ConversationAbandoned;
@@ -21,6 +10,16 @@ import fr.azodox.inventory.util.FastInv;
 import fr.azodox.util.HeadUtil;
 import fr.azodox.util.ItemBuilder;
 import fr.azodox.util.WGRegionUtil;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.conversations.ConversationFactory;
+import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeSet;
 
 public class CBlockInventory extends FastInv {
 
@@ -133,7 +132,7 @@ public class CBlockInventory extends FastInv {
         setItem(10, new ItemBuilder(HeadUtil.getHead("wrench"))
                 .setName(ChatColor.YELLOW + "Editer les permissions des membres")
                 .setLore(
-                        WGRegionUtil.getFlags(region)
+                        new TreeSet<>(WGRegionUtil.getFlags(region).keySet())
                 )
                 .build(), e -> {
                         new EditPermissionsInventory(player, region).open(player);
