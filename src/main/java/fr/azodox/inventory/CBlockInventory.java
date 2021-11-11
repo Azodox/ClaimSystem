@@ -134,7 +134,9 @@ public class CBlockInventory extends FastInv {
                 .setLore(
                         WGRegionUtil.getFlags(region)
                 )
-                .build());
+                .build(), e -> {
+                        new EditPermissionsInventory(region).open(player);
+                });
 
         List<String> members = new ArrayList<>();
         region.getMembers().getUniqueIds().forEach(u -> {
