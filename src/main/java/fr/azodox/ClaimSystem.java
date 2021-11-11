@@ -49,6 +49,7 @@ public class ClaimSystem extends JavaPlugin {
         headUtil.addHead("e4d49bae95c790c3b1ff5b2f01052a714d6185481d5b1c85930b3f99d2321674", "wrench");
         headUtil.addHead("935e4e26eafc11b52c11668e1d6634e7d1d0d21c411cb085f9394268eb4cdfba", "minus");
         headUtil.addHead("a497650457c69cffcbcf680eeb6a231a6abeb00cca5eadd7c1c68900d782e3b9", "permission");
+        headUtil.addHead("864f779a8e3ffa231143fa69b96b14ee35c16d669e19c75fd1a7da4bf306c", "back");
     }
 
     private void registerBlocks() {
