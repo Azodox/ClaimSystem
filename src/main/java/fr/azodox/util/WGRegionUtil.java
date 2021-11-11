@@ -5,6 +5,7 @@ import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.flags.RegionGroup;
 import com.sk89q.worldguard.protection.flags.StateFlag;
@@ -18,7 +19,9 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public final class WGRegionUtil {
@@ -73,15 +76,15 @@ public final class WGRegionUtil {
         return Integer.parseInt(regionId.substring(regionId.length() - 1));
     }
 
-    public static List<String> getFlags(ProtectedRegion region){
-        List<String> strings = new ArrayList<>();
+    public static Map<String, Flag> getFlags(ProtectedRegion region){
+        Map<String, Flag> flags = new HashMap<>();
         region.getFlags().forEach((f, v) -> {
             if(f instanceof StringFlag) {
                 return;
             }
-            strings.add(ChatColor.DARK_GRAY + "§l❯ " + ChatColor.WHITE + f.getName() + " " + ChatColor.AQUA + v.toString());
+            flags.put(ChatColor.DARK_GRAY + "§l❯ " + ChatColor.WHITE + f.getName() + " " + ChatColor.AQUA + v.toString(), f);
         });
-        return strings;
+        return flags;
     }
 
     public static void whenCreate(Player player){
