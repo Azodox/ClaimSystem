@@ -8,6 +8,7 @@ import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.flags.RegionGroup;
+import com.sk89q.worldguard.protection.flags.RegionGroupFlag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.flags.StringFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
@@ -79,7 +80,7 @@ public final class WGRegionUtil {
     public static Map<String, Flag> getFlags(ProtectedRegion region){
         Map<String, Flag> flags = new HashMap<>();
         region.getFlags().forEach((f, v) -> {
-            if(f instanceof StringFlag) {
+            if(f instanceof StringFlag || f instanceof RegionGroupFlag) {
                 return;
             }
             flags.put(ChatColor.DARK_GRAY + "§l❯ " + ChatColor.WHITE + f.getName() + " " + ChatColor.AQUA + v.toString(), f);
