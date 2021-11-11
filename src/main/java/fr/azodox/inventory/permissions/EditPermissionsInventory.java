@@ -1,14 +1,14 @@
 package fr.azodox.inventory.permissions;
 
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-
 import fr.azodox.inventory.util.FastInv;
 import fr.azodox.util.HeadUtil;
 import fr.azodox.util.ItemBuilder;
 import fr.azodox.util.WGRegionUtil;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+
+import java.util.TreeSet;
 
 public class EditPermissionsInventory extends FastInv {
 
@@ -17,7 +17,7 @@ public class EditPermissionsInventory extends FastInv {
 
     var flags = WGRegionUtil.getFlags(region);
     int i = 0;
-    for (var flag : flags.keySet()) {
+    for (var flag : new TreeSet<>(flags.keySet())) {
           setItem(i, new ItemBuilder(HeadUtil.getHead("permission"))
             .setName(flag).build(), e -> {
               new ChooseStateInventory(player, this, region, flags.get(flag)).open(player);
