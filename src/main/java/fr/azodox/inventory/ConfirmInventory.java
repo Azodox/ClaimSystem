@@ -58,12 +58,11 @@ public class ConfirmInventory extends FastInv {
         case DELETE:
           RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
           RegionManager regions = container.get(BukkitAdapter.adapt(world));
-
-          //TODO : delete the gold block when deleting region
           Location center = WGRegionUtil.getRegionCenter(region, world);
-          world.getBlockAt(center).setType(Material.AIR);
 
           regions.removeRegion(region.getId(), RemovalStrategy.REMOVE_CHILDREN);
+          
+          world.getBlockAt(center).setType(Material.AIR);
           player.closeInventory();
           player.sendMessage(ClaimSystem.PLUGIN_PREFIX + "Votre claim " + WGRegionUtil.getRegionIndex(region.getId()) + " a été supprimé !");
           break;
