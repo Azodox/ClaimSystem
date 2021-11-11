@@ -6,18 +6,16 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.managers.RemovalStrategy;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryType;
-
 import fr.azodox.ClaimSystem;
 import fr.azodox.inventory.util.FastInv;
 import fr.azodox.util.ItemBuilder;
 import fr.azodox.util.WGRegionUtil;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 
 public class ConfirmInventory extends FastInv {
 
@@ -26,21 +24,24 @@ public class ConfirmInventory extends FastInv {
   private final ConfirmationReason reason;
 
   public ConfirmInventory(FastInv from, ProtectedRegion region, ConfirmationReason reason){
-    super(InventoryType.HOPPER, ChatColor.RED + "" + ChatColor.BOLD + "Confirmation");
+    super(InventoryType.HOPPER, ChatColor.YELLOW + "" + ChatColor.BOLD + "Confirmation");
     this.from = from;
     this.region = region;
     this.reason = reason;
 
-    setItem(2, new ItemBuilder(Material.GREEN_DYE)
-      .setName(ChatColor.GREEN + "Souhaitez-vous confirmer votre décision ?")
+    setItem(1, new ItemBuilder(Material.GREEN_DYE)
+      .setName(ChatColor.GREEN + "§lConfirmer")
       .setLore(ChatColor.DARK_GRAY + "" + ChatColor.STRIKETHROUGH + "                          ",
               ChatColor.GRAY + "Attention : Cette action est irréversible.",
               ChatColor.DARK_GRAY + "" + ChatColor.STRIKETHROUGH + "                          ") 
       .build());
 
+    setItem(2, new ItemBuilder(Material.PAPER)
+      .setName(ChatColor.AQUA + "Êtes-vous sûr ?")
+      .setLore(ChatColor.GRAY + "De vouloir §l" + reason).build());
+
     setItem(3, new ItemBuilder(Material.RED_DYE)
-      .setName(ChatColor.GRAY + "Êtes-vous sûr ?")
-      .setLore(ChatColor.AQUA + "De vouloir §l" + reason).build());
+            .setName(ChatColor.RED + "§lAnnuler").build());
   }
 
   @Override
