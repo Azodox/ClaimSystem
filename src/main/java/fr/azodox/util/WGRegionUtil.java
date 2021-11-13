@@ -80,20 +80,17 @@ public final class WGRegionUtil {
     public static Map<String, Flag> getFlags(ProtectedRegion region){
         Map<String, Flag> flags = new HashMap<>();
         region.getFlags().forEach((f, v) -> {
-            if(f instanceof StringFlag || f instanceof RegionGroupFlag) {
+            if(f instanceof StringFlag) {
+                return;
+            }
+
+            if(region.getFlag(f.getRegionGroupFlag()) != null){
+                flags.put(ChatColor.DARK_GRAY + "§l❯ " + ChatColor.WHITE + f.getName() + " " + ChatColor.AQUA + "Pour les membres", f);
                 return;
             }
             flags.put(ChatColor.DARK_GRAY + "§l❯ " + ChatColor.WHITE + f.getName() + " " + ChatColor.AQUA + v.toString(), f);
         });
         return flags;
-    }
-
-    public static String translateFlagToString(Flag flag, Object value){
-        String s = "";
-
-        /*TODO : make a string with flag + value 
-        Taking consideration of group flag*/
-        return s;
     }
 
     public static void whenCreate(Player player){
