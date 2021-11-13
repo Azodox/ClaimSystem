@@ -2,6 +2,7 @@ package fr.azodox.util;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
@@ -14,6 +15,8 @@ import com.sk89q.worldguard.protection.flags.StringFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
+import com.sk89q.worldguard.protection.regions.RegionQuery;
+
 import fr.azodox.ClaimSystem;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -77,12 +80,19 @@ public final class WGRegionUtil {
         return Integer.parseInt(regionId.substring(regionId.length() - 1));
     }
 
-    public static Map<String, Flag> getFlags(ProtectedRegion region){
+    public static Map<String, Flag> getFlags(Player player, ProtectedRegion region){
+        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+        RegionQuery query = container.createQuery();
+        ApplicableRegionSet set = query.getApplicableRegions(BukkitAdapter.adapt(toBukkitLocation(Bukkit.getWorld("world"), region.getMaximumPoint())));
+        LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
+
         Map<String, Flag> flags = new HashMap<>();
         region.getFlags().forEach((f, v) -> {
             if(f instanceof StringFlag) {
                 return;
             }
+
+            System.out.println(set.queryValue(localPlayer, f));
 
             if(region.getFlag(f.getRegionGroupFlag()) != null){
                 flags.put(ChatColor.DARK_GRAY + "§l❯ " + ChatColor.WHITE + f.getName() + " " + ChatColor.AQUA + "Pour les membres", f);
