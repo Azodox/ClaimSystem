@@ -15,7 +15,7 @@ public class EditPermissionsInventory extends FastInv {
   public EditPermissionsInventory(Player player, ProtectedRegion region){
     super(5 * 9, ChatColor.YELLOW + "§lPermissions");
 
-    var flags = WGRegionUtil.getFlags(region);
+    var flags = WGRegionUtil.getFlags(player, region);
     int i = 0;
     for (var flag : new TreeSet<>(flags.keySet())) {
           setItem(i, new ItemBuilder(HeadUtil.getHead("permission"))

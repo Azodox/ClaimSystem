@@ -132,7 +132,7 @@ public class CBlockInventory extends FastInv {
         setItem(10, new ItemBuilder(HeadUtil.getHead("wrench"))
                 .setName(ChatColor.YELLOW + "Editer les permissions des membres")
                 .setLore(
-                        new TreeSet<>(WGRegionUtil.getFlags(region).keySet())
+                        new TreeSet<>(WGRegionUtil.getFlags(player, region).keySet())
                 )
                 .build(), e -> {
                         new EditPermissionsInventory(player, region).open(player);
