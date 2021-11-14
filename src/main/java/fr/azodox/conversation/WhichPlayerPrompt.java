@@ -23,12 +23,7 @@ public class WhichPlayerPrompt extends PlayerNamePrompt {
     protected Prompt acceptValidatedInput(@NotNull ConversationContext conversationContext, @NotNull Player player) {
         Player whom = (Player) conversationContext.getSessionData("whom");
         if (player.getUniqueId().equals(whom.getUniqueId())) {
-            conversationContext.getForWhom().sendRawMessage(ClaimSystem.PLUGIN_PREFIX + "Vous ne pouvez pas vous ajouter vous-même.");
-            return Prompt.END_OF_CONVERSATION;
-        }
-
-        if(!isInputValid(conversationContext, player.getName())){
-            conversationContext.getForWhom().sendRawMessage(ClaimSystem.PLUGIN_PREFIX + "Ce joueur n'existe pas.");
+            conversationContext.getForWhom().sendRawMessage(ClaimSystem.PLUGIN_PREFIX + "Vous ne pouvez pas vous " + (conversationContext.getSessionData("action").equals("add") ? "ajouter " : "retirer ") +"vous-même.");
             return Prompt.END_OF_CONVERSATION;
         }
 
@@ -39,12 +34,12 @@ public class WhichPlayerPrompt extends PlayerNamePrompt {
         }
 
         conversationContext.setSessionData("player", player);
-        return new AddedPlayerMsgPrompt();
+        return new ManagedPlayerMsgPrompt();
     }
 
     @NotNull
     @Override
     public String getPromptText(@NotNull ConversationContext conversationContext) {
-        return "Quel joueur souhaitez-vous ajouter ? ";
+        return "Quel joueur souhaitez-vous " + (conversationContext.getSessionData("action").equals("add") ? "ajouter " : "retirer ") + "?";
     }
 }

@@ -12,15 +12,11 @@ import org.bukkit.inventory.ItemStack;
 import fr.azodox.inventory.CBlockInventory;
 import fr.azodox.util.ItemBuilder;
 
-public class CBlockLI extends CBlockInventory implements ICBlock {
-
-    public CBlockLI() {
-        super(ChatColor.YELLOW + "§lBloc de claim §6(I)");
-    }
+public class CBlockLI implements ICBlock {
 
     @Override
     public String getName() {
-        return getInventoryName();
+        return ChatColor.YELLOW + "§lBloc de claim §6(I)";
     }
 
 
@@ -66,14 +62,9 @@ public class CBlockLI extends CBlockInventory implements ICBlock {
     public double getZSize() {
         return 50d;
     }
-
+ 
     @Override
-    public CBlockInventory getInventory() {
-        return this;
-    }
-
-    @Override
-    public void open(Player player, ProtectedRegion region) {
-        get(player, region).open(player);   
+    public void openInventory(Player player, ProtectedRegion region) {
+        new CBlockInventory(getName(), player, region).open(player);
     }
 }
