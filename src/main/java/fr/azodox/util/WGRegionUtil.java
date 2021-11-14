@@ -92,12 +92,14 @@ public final class WGRegionUtil {
                 return;
             }
 
-            System.out.println(set.queryValue(localPlayer, f));
-
-            if(region.getFlag(f.getRegionGroupFlag()) != null){
-                flags.put(ChatColor.DARK_GRAY + "§l❯ " + ChatColor.WHITE + f.getName() + " " + ChatColor.AQUA + "Pour les membres", f);
+            if(set.queryValue(localPlayer, f).equals("NON-MEMBERS")){
                 return;
             }
+
+            /*if(region.getFlag(f.getRegionGroupFlag()) != null){
+                flags.put(ChatColor.DARK_GRAY + "§l❯ " + ChatColor.WHITE + f.getName() + " " + ChatColor.AQUA + "Pour les membres", f);
+                return;
+            }*/
             flags.put(ChatColor.DARK_GRAY + "§l❯ " + ChatColor.WHITE + f.getName() + " " + ChatColor.AQUA + v.toString(), f);
         });
         return flags;
