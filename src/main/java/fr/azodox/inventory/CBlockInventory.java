@@ -5,7 +5,6 @@ import fr.azodox.ClaimSystem;
 import fr.azodox.conversation.ClaimConversationPrefix;
 import fr.azodox.conversation.ConversationAbandoned;
 import fr.azodox.conversation.WhichPlayerPrompt;
-import fr.azodox.inventory.permissions.EditPermissionsInventory;
 import fr.azodox.inventory.util.FastInv;
 import fr.azodox.util.HeadUtil;
 import fr.azodox.util.ItemBuilder;
@@ -19,7 +18,6 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeSet;
 
 public class CBlockInventory extends FastInv {
 
@@ -71,10 +69,7 @@ public class CBlockInventory extends FastInv {
                         ChatColor.GRAY + "Ce bouton permet d'ajouter un joueur",
                         ChatColor.GRAY + "dans les personnes de confiance de votre claim.",
                         ChatColor.GRAY + "Une fois ajouté, celui-ci sera présent comme membre de votre claim.",
-                        "§8§m                        ",
-                        "",
-                        ChatColor.DARK_GRAY + "[" + ChatColor.GRAY + "TIP" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Pour gérer les permissions des " + ChatColor.AQUA + "Membres," + ChatColor.GRAY + " utiliser le bouton",
-                        ChatColor.GRAY + "dans le menu de votre claim (celui-ci) représenté par la clé à molette."
+                        "§8§m                        "
                 )
                 .build(), e -> {
             ClaimSystem claimSystem = (ClaimSystem) Bukkit.getPluginManager().getPlugin("ClaimSystem");
@@ -126,16 +121,6 @@ public class CBlockInventory extends FastInv {
                                 .addConversationAbandonedListener(new ConversationAbandoned());
 
                         factory.buildConversation(player).begin();
-                });
-
-        //TODO : Code this feature, i.e edit members' permissions.
-        setItem(10, new ItemBuilder(HeadUtil.getHead("wrench"))
-                .setName(ChatColor.YELLOW + "Editer les permissions des membres")
-                .setLore(
-                        new TreeSet<>(WGRegionUtil.getFlags(player, region).keySet())
-                )
-                .build(), e -> {
-                        new EditPermissionsInventory(player, region).open(player);
                 });
 
         List<String> members = new ArrayList<>();

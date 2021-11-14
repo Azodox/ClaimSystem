@@ -2,22 +2,20 @@ package fr.azodox.util;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
-import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.flags.*;
+import com.sk89q.worldguard.protection.flags.Flags;
+import com.sk89q.worldguard.protection.flags.RegionGroup;
+import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
-import com.sk89q.worldguard.protection.regions.RegionQuery;
 import fr.azodox.ClaimSystem;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 public final class WGRegionUtil {
@@ -70,39 +68,6 @@ public final class WGRegionUtil {
 
     public static int getRegionIndex(String regionId){
         return Integer.parseInt(regionId.substring(regionId.length() - 1));
-    }
-
-    public static Map<String, Flag> getFlags(Player player, ProtectedRegion region){
-        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-        RegionQuery query = container.createQuery();
-        ApplicableRegionSet set = query.getApplicableRegions(BukkitAdapter.adapt(toBukkitLocation(Bukkit.getWorld("world"), region.getMaximumPoint())));
-        LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
-
-        Map<String, Flag> flags = new HashMap<>();
-        region.getFlags().forEach((f, v) -> {
-            if(f instanceof StringFlag) {
-                return;
-            }
-
-            /*Object queryValue = set.queryValue(localPlayer, f);
-            System.out.println(queryValue);
-            if(queryValue != null){
-                if(queryValue instanceof StateFlag){
-                    if(((StateFlag) queryValue).getDefault() == StateFlag.State.ALLOW){
-                        System.out.println("allow");
-                    }else{
-                        System.out.println("deny");
-                    }
-                }
-            }*/
-
-            /*if(region.getFlag(f.getRegionGroupFlag()) != null){
-                flags.put(ChatColor.DARK_GRAY + "§l❯ " + ChatColor.WHITE + f.getName() + " " + ChatColor.AQUA + "Pour les membres", f);
-                return;
-            }*/
-            flags.put(ChatColor.DARK_GRAY + "§l❯ " + ChatColor.WHITE + f.getName() + " " + ChatColor.AQUA + v.toString(), f);
-        });
-        return flags;
     }
 
     public static void whenCreate(Player player){
