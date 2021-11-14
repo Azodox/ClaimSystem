@@ -6,25 +6,17 @@ import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.flags.Flag;
-import com.sk89q.worldguard.protection.flags.Flags;
-import com.sk89q.worldguard.protection.flags.RegionGroup;
-import com.sk89q.worldguard.protection.flags.RegionGroupFlag;
-import com.sk89q.worldguard.protection.flags.StateFlag;
-import com.sk89q.worldguard.protection.flags.StringFlag;
+import com.sk89q.worldguard.protection.flags.*;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
-
 import fr.azodox.ClaimSystem;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -92,9 +84,17 @@ public final class WGRegionUtil {
                 return;
             }
 
-            if(set.queryValue(localPlayer, f).equals("NON-MEMBERS")){
-                return;
-            }
+            /*Object queryValue = set.queryValue(localPlayer, f);
+            System.out.println(queryValue);
+            if(queryValue != null){
+                if(queryValue instanceof StateFlag){
+                    if(((StateFlag) queryValue).getDefault() == StateFlag.State.ALLOW){
+                        System.out.println("allow");
+                    }else{
+                        System.out.println("deny");
+                    }
+                }
+            }*/
 
             /*if(region.getFlag(f.getRegionGroupFlag()) != null){
                 flags.put(ChatColor.DARK_GRAY + "§l❯ " + ChatColor.WHITE + f.getName() + " " + ChatColor.AQUA + "Pour les membres", f);
