@@ -8,6 +8,7 @@ import fr.azodox.task.ParticleTask;
 import fr.azodox.util.Cuboid;
 import fr.azodox.util.HeadUtil;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -18,8 +19,11 @@ public class ClaimSystem extends JavaPlugin {
 
     public static final int MAX_CLAIMS = 1;
     public static final String PLUGIN_PREFIX = ChatColor.GOLD + "§lClaimSystem §8§l➤ " + ChatColor.YELLOW + "";
+    
     private final List<ICBlock> registeredCBlocks = new ArrayList<>();
+    private final Map<Long, List<Location>> bordersParticles = new HashMap<>();
     private final Map<UUID, Cuboid> fakesParticles = new HashMap<>();
+
     private HeadUtil headUtil;
 
     @Override
@@ -77,5 +81,9 @@ public class ClaimSystem extends JavaPlugin {
     @NotNull
     public ICBlock getClaimBlock(int level){
         return registeredCBlocks.stream().filter(c -> c.getLevel(false).equals(String.valueOf(level))).findFirst().get();
+    }
+
+    public Map<Long, List<Location>> getBordersParticles() {
+        return bordersParticles;
     }
 }
