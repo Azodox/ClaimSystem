@@ -58,7 +58,9 @@ public class CBlockInventory extends FastInv {
                 ChatColor.GRAY + "La taille que vous voyez est la taille totale (de la couche " + ChatColor.DARK_AQUA + "0" + ChatColor.GRAY + " à " + ChatColor.DARK_AQUA + "256" + ChatColor.GRAY + ").",
                 "§8§m                        "
         )
-        .build());
+        .build(), e -> {
+                WGRegionUtil.showBorders(player, region);
+        });
         
         setItem(33, new ItemBuilder(HeadUtil.getHead("plus"))
                 .setName(ChatColor.AQUA + "Ajouter un joueur")
