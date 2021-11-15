@@ -32,7 +32,7 @@ public final class ParticleTask extends BukkitRunnable {
             Player player = Bukkit.getPlayer(uuid);
             if (player != null) {
                 for (Location l : cuboid.getBounds()) {
-                    new Particle(ParticleType.of("redstone"),
+                    new Particle(player, ParticleType.of("redstone"),
                             ParticleData.createDustOptions(Color.RED, 3))
                             .getType().spawn(player, l, 1);
                 }
