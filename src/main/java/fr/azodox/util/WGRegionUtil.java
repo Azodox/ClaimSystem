@@ -78,6 +78,13 @@ public final class WGRegionUtil {
                 ChatColor.DARK_GRAY + "/" + ChatColor.DARK_GREEN + ClaimSystem.MAX_CLAIMS + ChatColor.GRAY + "]");
     }
 
+    public static void showBorders(Player player, ProtectedRegion region){
+        World world = Bukkit.getWorld("world");
+        ClaimSystem claimSystem = (ClaimSystem) Bukkit.getPluginManager().getPlugin("ClaimSystem");
+        claimSystem.getBordersParticles().put(System.currentTimeMillis(), new Cuboid
+        (getRegionCenter(region, world), toBukkitLocation(world, region.getMinimumPoint()), toBukkitLocation(world, region.getMaximumPoint())).getBounds());
+    }
+
     public static Location getPointsCenter(Location point1, Location point2){
         return new Cuboid(null, point1, point2).getCenter();
     }
