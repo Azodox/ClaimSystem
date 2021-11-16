@@ -4,6 +4,7 @@ import fr.azodox.blocks.CBlockLI;
 import fr.azodox.blocks.ICBlock;
 import fr.azodox.events.*;
 import fr.azodox.inventory.util.FastInvManager;
+import fr.azodox.particle.Particle;
 import fr.azodox.task.ParticleTask;
 import fr.azodox.util.Cuboid;
 import fr.azodox.util.HeadUtil;
@@ -21,7 +22,7 @@ public class ClaimSystem extends JavaPlugin {
     public static final String PLUGIN_PREFIX = ChatColor.GOLD + "§lClaimSystem §8§l➤ " + ChatColor.YELLOW + "";
     
     private final List<ICBlock> registeredCBlocks = new ArrayList<>();
-    private final Map<Long, List<Location>> bordersParticles = new HashMap<>();
+    private final Map<Long, List<Particle>> bordersParticles = new HashMap<>();
     private final Map<UUID, Cuboid> fakesParticles = new HashMap<>();
 
     private HeadUtil headUtil;
@@ -83,7 +84,7 @@ public class ClaimSystem extends JavaPlugin {
         return registeredCBlocks.stream().filter(c -> c.getLevel(false).equals(String.valueOf(level))).findFirst().get();
     }
 
-    public Map<Long, List<Location>> getBordersParticles() {
+    public Map<Long, List<Particle>> getBordersParticles() {
         return bordersParticles;
     }
 }
