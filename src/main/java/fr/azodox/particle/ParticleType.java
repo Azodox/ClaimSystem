@@ -12,8 +12,8 @@ public interface ParticleType {
      * @return the particle type
      * @throws IllegalArgumentException if the particle type doesn't exists or isn't supported
      */
-    static ParticleType of(String name) {
-        return ParticleTypes.of(name);
+    static ParticleType of(Player player, String name) {
+        return ParticleTypes.of(player, name);
     }
 
     /**
@@ -465,7 +465,6 @@ public interface ParticleType {
      * on each axis.
      *
      * @param <T>     type of particle data (see {@link ParticleType#getDataType()}
-     * @param player  the player to spawn particle to
      * @param x       the position on the x axis to spawn at
      * @param y       the position on the y axis to spawn at
      * @param z       the position on the z axis to spawn at
@@ -478,5 +477,7 @@ public interface ParticleType {
      * @param data    the data to use for the particle or null,
      *                the type of this depends on {@link ParticleType#getDataType()}
      */
+    <T> void spawnToPlayer(double x, double y, double z, int count, double offsetX, double offsetY, double offsetZ, double extra, T data);
+
     <T> void spawn(Player player, double x, double y, double z, int count, double offsetX, double offsetY, double offsetZ, double extra, T data);
 }

@@ -41,15 +41,15 @@ final class ParticleTypes {
         throw new UnsupportedOperationException();
     }
 
-    static ParticleType of(String name) {
+    static ParticleType of(Player player, String name) {
         Objects.requireNonNull(name, "name");
 
         try {
             if (LEGACY) {
-                return LegacyParticleType.of(name.toUpperCase(Locale.ROOT));
+                return LegacyParticleType.of(player, name.toUpperCase(Locale.ROOT));
             }
 
-            return new DefaultParticleType(Particle.valueOf(name.toUpperCase(Locale.ROOT)));
+            return new DefaultParticleType(player, Particle.valueOf(name.toUpperCase(Locale.ROOT)));
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("Invalid or unsupported particle type: " + name);
         }
@@ -61,9 +61,11 @@ final class ParticleTypes {
 
     static final class DefaultParticleType implements ParticleType {
 
+        private final Player player;
         private final Particle particle;
 
-        public DefaultParticleType(Particle particle) {
+        public DefaultParticleType(Player player, Particle particle) {
+            this.player = player;
             this.particle = Objects.requireNonNull(particle, "particle");
         }
 
@@ -116,6 +118,11 @@ final class ParticleTypes {
             }
 
             player.spawnParticle(this.particle, x, y, z, count, offsetX, offsetY, offsetZ, extra, newData);
+        }
+
+        @Override
+        public <T> void spawnToPlayer(double x, double y, double z, int count, double offsetX, double offsetY, double offsetZ, double extra, T data) {
+            this.spawn(this.player, x, y, z, count, offsetX, offsetY, offsetZ, extra, data);
         }
 
         private Object mapData(Object data) {

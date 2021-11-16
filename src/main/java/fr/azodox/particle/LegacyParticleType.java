@@ -64,15 +64,17 @@ final class LegacyParticleType implements ParticleType {
 
     private final String name;
     private final Object particle; // String on 1.7.10 and EnumParticle on 1.8.8
+    private final Player player;
 
-    private LegacyParticleType(String name, Object particle) {
+    private LegacyParticleType(Player player, String name, Object particle) {
         this.name = Objects.requireNonNull(name, "name");
         this.particle = Objects.requireNonNull(particle, "particle");
+        this.player = player;
     }
 
-    static ParticleType of(String name) {
+    static ParticleType of(Player player, String name) {
         if (IS_1_8) {
-            return new LegacyParticleType(name, FastReflection.enumValueOf(ENUM_PARTICLE, name));
+            return new LegacyParticleType(player, name, FastReflection.enumValueOf(ENUM_PARTICLE, name));
         }
 
         String legacyName = LEGACY_NAMES.get(name);
@@ -81,7 +83,7 @@ final class LegacyParticleType implements ParticleType {
             throw new IllegalArgumentException("Invalid legacy particle: " + name);
         }
 
-        return new LegacyParticleType(name, legacyName);
+        return new LegacyParticleType(player, name, legacyName);
     }
 
     private static Map<String, String> getLegacyParticleNames() {
@@ -263,5 +265,12 @@ final class LegacyParticleType implements ParticleType {
     @Override
     public String toString() {
         return "LegacyParticleType{particle=" + this.particle + '}';
+    }
+
+    @Override
+    public <T> void spawnToPlayer(double x, double y, double z, int count, double offsetX, double offsetY,
+            double offsetZ, double extra, T data) {
+        this.spawn(this.player, x, y, z, count, offsetX, offsetY, offsetZ, extra, data);
+        
     }
 }
