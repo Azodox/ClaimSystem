@@ -5,11 +5,11 @@ import fr.azodox.blocks.ICBlock;
 import fr.azodox.events.*;
 import fr.azodox.inventory.util.FastInvManager;
 import fr.azodox.particle.Particle;
+import fr.azodox.task.BorderTask;
 import fr.azodox.task.ParticleTask;
 import fr.azodox.util.Cuboid;
 import fr.azodox.util.HeadUtil;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -63,6 +63,7 @@ public class ClaimSystem extends JavaPlugin {
 
     private void registerTasks() {
         new ParticleTask(this).runTaskTimer(this, 0, 20);
+        new BorderTask(this).runTaskTimer(this, 0, 20);
     }
 
     private void registerEvents(Listener...listeners){

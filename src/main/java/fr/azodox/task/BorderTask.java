@@ -1,12 +1,11 @@
 package fr.azodox.task;
 
-import java.util.List;
-import java.util.Map;
-
-import org.bukkit.scheduler.BukkitRunnable;
-
 import fr.azodox.ClaimSystem;
 import fr.azodox.particle.Particle;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.List;
+import java.util.Map;
 
 public class BorderTask extends BukkitRunnable {
 
@@ -22,6 +21,7 @@ public class BorderTask extends BukkitRunnable {
       for(List<Particle> particles : borders.values()){
         for(Particle particle : particles){
           particle.getType().spawn(particle.getPlayer(), particle.getLocation(), 1);
+          System.out.println("particle location : " + particle.getLocation());
         }
       }
     }

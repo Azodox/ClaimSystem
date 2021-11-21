@@ -12,11 +12,14 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import fr.azodox.ClaimSystem;
+import fr.azodox.particle.ParticleData;
+import fr.azodox.particle.ParticleType;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public final class WGRegionUtil {
 
@@ -81,8 +84,11 @@ public final class WGRegionUtil {
     public static void showBorders(Player player, ProtectedRegion region){
         World world = Bukkit.getWorld("world");
         ClaimSystem claimSystem = (ClaimSystem) Bukkit.getPluginManager().getPlugin("ClaimSystem");
-        claimSystem.getBordersParticles().put(System.currentTimeMillis(), new Cuboid
-        (getRegionCenter(region, world), toBukkitLocation(world, region.getMinimumPoint()), toBukkitLocation(world, region.getMaximumPoint())).getBounds());
+        var bounds = new Cuboid(getRegionCenter(region, world), toBukkitLocation(world, region.getMinimumPoint()), toBukkitLocation(world, region.getMaximumPoint())).getBounds();
+        bounds.forEach(l -> l.setY(WGRegionUtil.getRegionCenter(region, world).getBlockY()));
+
+        var particles = bounds.stream().map(l -> new fr.azodox.particle.Particle(player, l, ParticleType.of(player, "redstone"), ParticleData.createDustOptions(Color.AQUA, 3))).collect(Collectors.toList());
+        claimSystem.getBordersParticles().put(System.currentTimeMillis(), particles);
     }
 
     public static Location getPointsCenter(Location point1, Location point2){
