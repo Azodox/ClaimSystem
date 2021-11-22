@@ -1,5 +1,6 @@
 package fr.azodox.util;
 
+import com.google.common.collect.Lists;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldguard.WorldGuard;
@@ -18,6 +19,7 @@ import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -86,15 +88,16 @@ public final class WGRegionUtil {
         var world = Bukkit.getWorld("world");
         var claimSystem = (ClaimSystem) Bukkit.getPluginManager().getPlugin("ClaimSystem");
         var bounds = new LinkedHashSet<>(new Cuboid(getRegionCenter(region, world), toBukkitLocation(world, region.getMinimumPoint()), toBukkitLocation(world, region.getMaximumPoint())).getBounds());
+        var locations = new ArrayList<Location>();
 
         bounds.forEach(l -> {
             for(int i = 0; i <= 255; i++){
-                l.setY(i);
-                bounds.add(l);
+                l.clone().setY(i);
+                locations.add(l);
             }
         });
 
-        var particles = bounds.stream().map(l -> new fr.azodox.particle.Particle(player, l, ParticleType.of(player, "redstone"), ParticleData.createDustOptions(Color.AQUA, 3))).collect(Collectors.toList());
+        var particles = locations.stream().map(l -> new fr.azodox.particle.Particle(player, l, ParticleType.of(player, "redstone"), ParticleData.createDustOptions(Color.AQUA, 3))).collect(Collectors.toList());
         claimSystem.getBordersParticles().put(System.currentTimeMillis(), particles);
     }
 
