@@ -22,6 +22,7 @@ public class BorderTask extends BukkitRunnable {
         for(Particle particle : particles){
           particle.getType().spawn(particle.getPlayer(), particle.getLocation(), 1);
           System.out.println("particle location : " + particle.getLocation());
+          //TODO : remove particle after x seconds
         }
       }
     }
