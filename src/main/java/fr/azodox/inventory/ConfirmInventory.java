@@ -62,8 +62,8 @@ public class ConfirmInventory extends FastInv {
 
           regions.removeRegion(region.getId(), RemovalStrategy.REMOVE_CHILDREN);
           
-          world.getBlockAt(center).setType(Material.AIR);
-          player.closeInventory();
+          world.getBlockAt(center).setType(Material.DIRT);
+          player.closeInventory(); 
           player.sendMessage(ClaimSystem.PLUGIN_PREFIX + "Votre claim " + WGRegionUtil.getRegionIndex(region.getId()) + " a été supprimé !");
           break;
       default:
