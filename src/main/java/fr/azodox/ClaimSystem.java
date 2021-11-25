@@ -5,14 +5,13 @@ import fr.azodox.blocks.ICBlock;
 import fr.azodox.events.*;
 import fr.azodox.gui.CBlockGUI;
 import fr.azodox.inventory.util.FastInvManager;
-import fr.azodox.particle.Particle;
 import fr.azodox.task.BorderTask;
 import fr.azodox.task.ParticleTask;
 import fr.azodox.util.Cuboid;
 import fr.azodox.util.HeadUtil;
 import fr.azodox.util.WGRegionUtil;
-
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -32,7 +31,7 @@ public class ClaimSystem extends JavaPlugin {
      * Fill up by {@link WGRegionUtil#showBorders(org.bukkit.entity.Player, com.sk89q.worldguard.protection.regions.ProtectedRegion)} 
      * Values used by {@link BorderTask#run()}
     */
-    private final Map<Long, List<Particle>> bordersParticles = new HashMap<>(); 
+    private final Map<Long, Player> borders = new HashMap<>();
     private final Map<UUID, Cuboid> fakesParticles = new HashMap<>();
 
     private HeadUtil headUtil;
@@ -138,10 +137,10 @@ public class ClaimSystem extends JavaPlugin {
     }
 
     /**
-     * {@link #bordersParticles}
+     * {@link  borders}
      * @return particles showed to player when asked
      */
-    public Map<Long, List<Particle>> getBordersParticles() {
-        return bordersParticles;
+    public Map<Long, Player> getBorders() {
+        return borders;
     }
 }

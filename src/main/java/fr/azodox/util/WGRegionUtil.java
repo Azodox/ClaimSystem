@@ -1,6 +1,5 @@
 package fr.azodox.util;
 
-import com.google.common.collect.Lists;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldguard.WorldGuard;
@@ -13,16 +12,15 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import fr.azodox.ClaimSystem;
-import fr.azodox.particle.ParticleData;
-import fr.azodox.particle.ParticleType;
+import net.minecraft.network.protocol.game.ClientboundInitializeBorderPacket;
+import net.minecraft.world.level.border.WorldBorder;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public final class WGRegionUtil {
 
@@ -87,18 +85,19 @@ public final class WGRegionUtil {
     public static void showBorders(Player player, ProtectedRegion region){
         var world = Bukkit.getWorld("world");
         var claimSystem = (ClaimSystem) Bukkit.getPluginManager().getPlugin("ClaimSystem");
-        var bounds = new LinkedHashSet<>(new Cuboid(getRegionCenter(region, world), toBukkitLocation(world, region.getMinimumPoint()), toBukkitLocation(world, region.getMaximumPoint())).getBounds());
-        var locations = new ArrayList<Location>();
+        var center = getRegionCenter(region, world);
+        var worldBorder = new WorldBorder();
 
-        bounds.forEach(l -> {
-            for(int i = 0; i <= 255; i++){
-                l.clone().setY(i);
-                locations.add(l);
-            }
-        });
+        worldBorder.world = ((CraftWorld) world).getHandle();
+        worldBorder.setCenter(center.getX(), center.getZ());
+        worldBorder.setWarningTime(0);
+        worldBorder.setWarningDistance(0);
+        worldBorder.setDamageAmount(0);
+        worldBorder.setDamageBuffer(0);
+        worldBorder.setSize(10);
 
-        var particles = locations.stream().map(l -> new fr.azodox.particle.Particle(player, l, ParticleType.of(player, "redstone"), ParticleData.createDustOptions(Color.AQUA, 3))).collect(Collectors.toList());
-        claimSystem.getBordersParticles().put(System.currentTimeMillis(), particles);
+        ((CraftPlayer) player).getHandle().b.sendPacket(new ClientboundInitializeBorderPacket(worldBorder));
+        claimSystem.getBorders().put(System.currentTimeMillis(), player);
     }
 
     public static Location getPointsCenter(Location point1, Location point2){
