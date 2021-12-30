@@ -26,6 +26,7 @@ public class Cuboid {
     private final double zMaxCentered;
     private final World world;
     private final Location srcBlock;
+    private boolean isValid;
 
     public Cuboid(final Location srcBlock, final Location point1, final Location point2) {
         this.xMin = Math.min(point1.getBlockX(), point2.getBlockX());
@@ -174,6 +175,14 @@ public class Cuboid {
 
     public int getzMax() {
         return zMax;
+    }
+
+    public void setValid(boolean isValid) {
+        this.isValid = isValid;
+    }
+
+    public boolean isValid() {
+        return isValid;
     }
 }
 
