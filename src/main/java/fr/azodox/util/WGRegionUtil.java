@@ -97,7 +97,7 @@ public final class WGRegionUtil {
         worldBorder.setSize(10);
 
         ((CraftPlayer) player).getHandle().b.sendPacket(new ClientboundInitializeBorderPacket(worldBorder));
-        claimSystem.getBorders().put(System.currentTimeMillis(), player);
+        claimSystem.getBorders().putIfAbsent(System.currentTimeMillis(), player);
     }
 
     public static Location getPointsCenter(Location point1, Location point2){
