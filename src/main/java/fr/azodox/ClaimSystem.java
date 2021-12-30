@@ -18,6 +18,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
+import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+
 /**
  * This class is the main class of this plugin.
  */
