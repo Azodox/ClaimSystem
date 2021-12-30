@@ -84,9 +84,10 @@ public class CBlockGUI {
             //help.getScore("§7§nNoir §8§l➥f §fTaille maximal d'un claim").setScore(1);
             help.getScore("§c").setScore(0);
 
-            //player.setScoreboard(sb);
+            player.setScoreboard(sb);
         }
 
+        cuboid.setValid(isValid);
         main.getFakesParticles().put(player.getUniqueId(), cuboid);
 
         if(isValid){
