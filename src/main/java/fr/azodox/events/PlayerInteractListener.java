@@ -11,7 +11,7 @@ import net.minecraft.network.protocol.game.PacketPlayOutAnimation;
 import net.minecraft.server.level.EntityPlayer;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_18_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -36,7 +36,7 @@ public class PlayerInteractListener implements Listener {
 
                     EntityPlayer entityPlayer = ((CraftPlayer) player).getHandle();
                     PacketPlayOutAnimation packet = new PacketPlayOutAnimation(entityPlayer, 0);
-                    entityPlayer.b.sendPacket(packet);
+                    entityPlayer.b.a(packet);
 
                     ICBlock cBlock = CBlockUtil.getClaimBlockFromLevel(CBlockUtil.getClaimBlockLevel(block));
                     cBlock.openInventory(player, region);
