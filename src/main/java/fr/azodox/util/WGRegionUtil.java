@@ -12,12 +12,13 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import fr.azodox.ClaimSystem;
-import net.minecraft.network.protocol.game.ClientboundInitializeBorderPacket;
+import net.minecraft.network.protocol.game.*;
+import net.minecraft.server.level.EntityPlayer;
 import net.minecraft.world.level.border.WorldBorder;
 import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_18_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_18_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import java.util.Objects;
@@ -89,14 +90,21 @@ public final class WGRegionUtil {
         var worldBorder = new WorldBorder();
 
         worldBorder.world = ((CraftWorld) world).getHandle();
-        worldBorder.setCenter(center.getX(), center.getZ());
-        worldBorder.setWarningTime(0);
-        worldBorder.setWarningDistance(0);
-        worldBorder.setDamageAmount(0);
-        worldBorder.setDamageBuffer(0);
-        worldBorder.setSize(10);
 
-        ((CraftPlayer) player).getHandle().b.sendPacket(new ClientboundInitializeBorderPacket(worldBorder));
+        worldBorder.c(center.getX(), center.getZ()); // center
+        worldBorder.b(0); // warning time
+        worldBorder.c(0); // warning distance
+        worldBorder.c(0.0); // damage amount
+        worldBorder.b(0.0); // damage buffer
+        worldBorder.a(10); // size
+
+        EntityPlayer handle = ((CraftPlayer) player).getHandle();
+        handle.b.a(new ClientboundSetBorderLerpSizePacket(worldBorder));
+        handle.b.a(new ClientboundSetBorderCenterPacket(worldBorder));
+        handle.b.a(new ClientboundSetBorderSizePacket(worldBorder));
+        handle.b.a(new ClientboundSetBorderWarningDistancePacket(worldBorder));
+        handle.b.a(new ClientboundSetBorderWarningDelayPacket(worldBorder));
+        handle.b.a(new ClientboundInitializeBorderPacket(worldBorder));
         claimSystem.getBorders().putIfAbsent(System.currentTimeMillis(), player);
     }
 
