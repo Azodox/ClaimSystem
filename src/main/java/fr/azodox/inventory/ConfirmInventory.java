@@ -14,6 +14,7 @@ import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -61,10 +62,15 @@ public class ConfirmInventory extends FastInv {
           Location center = WGRegionUtil.getRegionCenter(region, world);
 
           regions.removeRegion(region.getId(), RemovalStrategy.REMOVE_CHILDREN);
-          
-          world.getBlockAt(center).setType(Material.DIRT);
-          player.closeInventory(); 
-          player.sendMessage(ClaimSystem.PLUGIN_PREFIX + "Votre claim " + WGRegionUtil.getRegionIndex(region.getId()) + " a été supprimé !");
+
+          for(int y = 0; y <= 255; y++){
+            Block at = world.getBlockAt(new Location(center.getWorld(), center.getX(), y, center.getZ()));
+            if(at.getType().equals(Material.GOLD_BLOCK)){
+              at.setType(Material.AIR);
+            }
+          }
+          player.closeInventory();
+          player.sendMessage(ClaimSystem.PLUGIN_PREFIX + "Votre claim #" + WGRegionUtil.getRegionIndex(region.getId()) + " a été supprimé !");
           break;
       default:
         break;
