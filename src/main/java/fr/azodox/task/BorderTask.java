@@ -2,7 +2,6 @@ package fr.azodox.task;
 
 import com.google.common.collect.Iterators;
 import fr.azodox.ClaimSystem;
-import fr.azodox.util.BorderUtil;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -27,7 +26,7 @@ public class BorderTask extends BukkitRunnable {
           var entry = iterator.next();
           if((System.currentTimeMillis() / 1000) - (entry.getKey() / 1000) >= 10){
               iterator.remove();
-              BorderUtil.resetBorder(entry.getValue());
+              ClaimSystem.getBorderAPI().getBorderManager().getPlayerBorder(entry.getValue()).remove(entry.getValue());
           }
         }
       }

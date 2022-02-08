@@ -23,6 +23,7 @@ repositories {
 }
 
 dependencies {
+    implementation 'com.github.hakan-krgn.hWorldBorderAPI:bukkit:1.1.2'
     implementation 'commons-codec:commons-codec:1.15'
     shadow 'org.spigotmc:spigot:1.18.1-R0.1-SNAPSHOT'
     shadow 'com.sk89q.worldguard:worldguard-bukkit:7.0.6-SNAPSHOT'

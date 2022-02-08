@@ -1,5 +1,7 @@
 package fr.azodox.util;
 
+import com.hakan.borderapi.api.HBorderColor;
+import com.hakan.borderapi.api.HWorldBorder;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldguard.WorldGuard;
@@ -12,13 +14,8 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import fr.azodox.ClaimSystem;
-import net.minecraft.network.protocol.game.*;
-import net.minecraft.server.level.EntityPlayer;
-import net.minecraft.world.level.border.WorldBorder;
 import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_18_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_18_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import java.util.Objects;
@@ -87,24 +84,17 @@ public final class WGRegionUtil {
         var world = Bukkit.getWorld("world");
         var claimSystem = (ClaimSystem) Bukkit.getPluginManager().getPlugin("ClaimSystem");
         var center = getRegionCenter(region, world);
-        var worldBorder = new WorldBorder();
 
-        worldBorder.world = ((CraftWorld) world).getHandle();
-
-        worldBorder.c(center.getX(), center.getZ()); // center
-        worldBorder.b(0); // warning time
-        worldBorder.c(0); // warning distance
-        worldBorder.c(0.0); // damage amount
-        worldBorder.b(0.0); // damage buffer
-        worldBorder.a(10); // size
-
-        EntityPlayer handle = ((CraftPlayer) player).getHandle();
-        handle.b.a(new ClientboundSetBorderLerpSizePacket(worldBorder));
-        handle.b.a(new ClientboundSetBorderCenterPacket(worldBorder));
-        handle.b.a(new ClientboundSetBorderSizePacket(worldBorder));
-        handle.b.a(new ClientboundSetBorderWarningDistancePacket(worldBorder));
-        handle.b.a(new ClientboundSetBorderWarningDelayPacket(worldBorder));
-        handle.b.a(new ClientboundInitializeBorderPacket(worldBorder));
+        HWorldBorder hWorldBorder = ClaimSystem.getBorderAPI().getBorderCreator()
+                .setCenter(center)
+                .setDamageAmount(0)
+                .setDamageBuffer(0)
+                .setWarningTime(0)
+                .setWarningDistance(0)
+                .setSize(10)
+                .setColor(HBorderColor.GREEN)
+                .create();
+        hWorldBorder.send(player);
         claimSystem.getBorders().putIfAbsent(System.currentTimeMillis(), player);
     }
 

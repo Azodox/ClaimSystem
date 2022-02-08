@@ -60,6 +60,7 @@ public class CBlockInventory extends FastInv {
         )
         .build(), e -> {
                 WGRegionUtil.showBorders(player, region);
+                player.closeInventory();
         });
         
         setItem(33, new ItemBuilder(HeadUtil.getHead("plus"))

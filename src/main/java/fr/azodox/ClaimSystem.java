@@ -1,5 +1,6 @@
 package fr.azodox;
 
+import com.hakan.borderapi.bukkit.BorderAPI;
 import fr.azodox.blocks.CBlockLI;
 import fr.azodox.blocks.ICBlock;
 import fr.azodox.events.*;
@@ -18,9 +19,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-import com.sk89q.worldguard.WorldGuard;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-
 /**
  * This class is the main class of this plugin.
  */
@@ -37,39 +35,16 @@ public class ClaimSystem extends JavaPlugin {
     private final Map<Long, Player> borders = new HashMap<>();
     private final Map<UUID, Cuboid> fakesParticles = new HashMap<>();
 
+    private static BorderAPI borderAPI;
+
     private HeadUtil headUtil;
 
     /**
-     * This is the method called when the plugin is enabled.
-     * This will 
-     * 
-     * initialize the {@link #headUtil} variable,
-     * register the {@link FastInvManager},
-     * register the tasks,
-     * register blocks,
-     * register heads {@link HeadUtil},
-     * register the events.
+     * {@link this#borderAPI}
+     * @return borderAPI's instance
      */
-    @Override
-    public void onEnable() {
-        headUtil = new HeadUtil();
-        FastInvManager.register(this);
-
-        registerTasks();
-        registerBlocks();
-        registerHeads();
-
-        registerEvents(
-                new PlayerJoinListener(this),
-                new PlayerHoldItemListener(this),
-                new PlayerMoveListener(this),
-                new BlockPlaceListener(this),
-                new RegionEnteredListener(),
-                new RegionLeftListener(),
-                new BlockBreakListener(),
-                new BlockExplodeListener(),
-                new PlayerInteractListener());
-        getLogger().info("Enabled!");
+    public static BorderAPI getBorderAPI() {
+        return borderAPI;
     }
 
     /**
@@ -145,5 +120,40 @@ public class ClaimSystem extends JavaPlugin {
      */
     public Map<Long, Player> getBorders() {
         return borders;
+    }
+
+    /**
+     * This is the method called when the plugin is enabled.
+     * This will
+     *
+     * initialize the {@link #borderAPI} variable,
+     * initialize the {@link #headUtil} variable,
+     * register the {@link FastInvManager},
+     * register the tasks,
+     * register blocks,
+     * register heads {@link HeadUtil},
+     * register the events.
+     */
+    @Override
+    public void onEnable() {
+        borderAPI = BorderAPI.getInstance(this);
+        headUtil = new HeadUtil();
+        FastInvManager.register(this);
+
+        registerTasks();
+        registerBlocks();
+        registerHeads();
+
+        registerEvents(
+                new PlayerJoinListener(this),
+                new PlayerHoldItemListener(this),
+                new PlayerMoveListener(this),
+                new BlockPlaceListener(this),
+                new RegionEnteredListener(),
+                new RegionLeftListener(),
+                new BlockBreakListener(),
+                new BlockExplodeListener(),
+                new PlayerInteractListener());
+        getLogger().info("Enabled!");
     }
 }
