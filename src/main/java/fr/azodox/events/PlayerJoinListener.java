@@ -5,6 +5,7 @@ import fr.azodox.particle.Particle;
 import fr.azodox.particle.ParticleData;
 import fr.azodox.particle.ParticleType;
 import fr.azodox.particle.Rotator;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -51,8 +52,8 @@ public class PlayerJoinListener implements Listener {
 
                     Vector zVector = Rotator.rotateAroundAxisZ(new Vector(x, 0, z), i);
                     Vector yVector = Rotator.rotateAroundAxisY(new Vector(x, 0, z), i);
-                    Vector negaYVector = Rotator.rotateAroundAxisY(new Vector(-x, 0, -z), i);
-                    Vector negaZVector = Rotator.rotateAroundAxisY(new Vector(-x, 0, -z), i);
+                    Vector negaYVector = Rotator.rotateAroundAxisY(new Vector(x, 0, -z), i);
+                    Vector negaZVector = Rotator.rotateAroundAxisY(new Vector(x, 0, -z), i);
 
                     Location location = LOCATION.clone();
                     location.add(zVector);
@@ -62,7 +63,8 @@ public class PlayerJoinListener implements Listener {
 
                     var particle = new Particle(player, location, ParticleType.of(player, "redstone"), null);
                     var particleType = particle.getType();
-                    particleType.spawn(player, location, 1, ParticleData.createDustOptions(Color.fromRGB(random.nextInt(255), random.nextInt(60), random.nextInt(255)), 2));
+                    var randomChatColor = ChatColor.of(String.format("#%06x", random.nextInt(0xffffff + 1)));
+                    particleType.spawn(player, location, 1, ParticleData.createDustOptions(Color.fromRGB(randomChatColor.getColor().getRGB()), 2));
 
                     location.subtract(zVector);
                     location.subtract(yVector);
